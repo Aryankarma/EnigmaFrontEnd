@@ -1,53 +1,51 @@
 import React from "react";
 import Link from "next/link";
 import styles from "./page.module.scss";
+import TakeInput from "./components/inputFile";
 
-export default function Convo() {
+export default function Home() {
   return (
-    <div>
+    <div className={styles.parentContainer}>
+      
       <nav className={styles.nav}>
-        ENIGMA
+        <h1 className={styles.enigma}>ENIGMA</h1>
       </nav>
-    
-      <main>
-        <div className="intro-text">
+
+      <main className={styles.main}>
+
+        <div>
           <h1>Are you exhausted with lengthy documents?</h1>
-          <a href="#" className="get-started-button">Get Started</a>
+          <h1>ENIGMA can help you!</h1>
         </div>
         
-        <div className="card">
-        <div className={styles.dottedBox}>
-          <h1>Upload files</h1>
-          <div className="card-body">
-            <section id="file-upload">
-              <form action="/upload" method="post" enctype="multipart/form-data">
-                <input type="file" id="upload-file" accept=".pdf,.doc,.docx" />
-                {/*  <h4>-OR-</h4> 
-                <h4>Drag and drop files</h4> */}
-               {/* <button type="submit" id="upload-button">Browse files</button> */}
-              </form>
-            </section>
-            </div>
-            <div>
-              {/* Add the progress section for file upload here */}
-            </div>
+        <div className={styles.card}>
+
+          <div className={styles.dragAndDrop}>
+            <img className={styles.uploadLogo} src="/img/uploadLogo.png" alt="" />
+            <h1>Drag & Drop files</h1>
           </div>
+
+          <div className={styles.or}>
+            <p style={{color:"#999", fontSize:"27px", fontWeight:"200"}}>--------------<span style={{fontWeight:"500"}}>&nbsp; or &nbsp; </span>--------------</p> 
+          </div>
+
+          <div className={styles.selectFileContainer}>
+            <label for="upload-file">
+                <span className={styles.selectFileBtn}>Select File</span>
+                <input type="file" id="upload-file" accept=".pdf,.doc,.docx" style={{display:"none"}}/>
+            </label>
+          </div>
+
         </div>
-      
-        <section id="output">
-          <button id="result-button" className="hidden">Analysis Results</button>
-          {/* Output section to display analysis results */}
-        </section>
+
+
+      <Link className={styles.link} href="/conversatoin">
+          <button id={styles.resetbutton}>Analysis Results</button>
+      </Link>
+
       </main>
       
-      <footer>
-        {/* Footer content goes here */}
-      </footer>
-      
-      {/* Add any other elements or components you need */}
-      
-      {/* Example of using Next.js Link component */}
-      <Link className={styles.link} href="/">Transfer me to Home Page.</Link>
+    
     </div>
   );
 }
