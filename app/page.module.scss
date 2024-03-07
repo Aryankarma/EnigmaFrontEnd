@@ -1,11 +1,27 @@
-
 // same css syntax
 .MainHeading{
   font-weight: 900;
-  color: black;
+  color: rgb(26, 26, 72);
 }
 
 .link{
   color: #333;
   font-weight:300;
+}
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+
+.nav {
+  border: 2px solid #092843; /* Border color */
+  background-color: #092843; /* Background color */
+  color: white; /* Text color */
+  padding: 10px; /* Add padding for better appearance */
+  display: inline-block; /* Ensure the border wraps around the text */
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
