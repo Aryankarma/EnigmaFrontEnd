@@ -44,18 +44,18 @@ const DragDropFiles = () => {
           </div>
 
           <div className={styles.selectFileContainer}>
-            <label for="upload-file">
+            <label htmlFor="upload-file">
                 <button className={styles.selectFileBtn} onClick={() => inputRef.current.click()}>Select file</button>
                 <input 
                   onChange={(event) => setFiles(event.target.files)}
-                  hidden
+                  hidden   
                   ref={inputRef}
                   type="file" 
                   id="upload-file"
                   accept=".pdf,.doc,.docx"
                   style={{display:"none"}}/>
             </label>
-          </div>
+          </div> 
 
         </div>
     </>

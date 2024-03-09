@@ -3,15 +3,14 @@ import Link from "next/link";
 import styles from "./page.module.scss";
 import DragDrop from "./components/Drag&Drop";
 // import Card, { DraggableCardWrapper } from './components/Drag&Drop'
+import Navbar from "./components/navbar";
 
 export default function Home() {
 
   return (
     <div className={styles.parentContainer}>
       
-      <nav className={styles.nav}>
-        <h1 className={styles.enigma}>ENIGMA</h1>
-      </nav>
+      <Navbar/>
 
       <main className={styles.main}>
 
@@ -20,15 +19,14 @@ export default function Home() {
           <h1>ENIGMA can help you!</h1>
         </div>
 
-        <DragDrop/> {/* componenet containing drag & drop functionality*/}
+        <DragDrop/> {/* componenet containing drag & drop functionality */}
 
-      <Link className={styles.link} href="/conversatoin">
+      <Link className={styles.link} href="/conversation">
           <button id={styles.analysisbutton}>Analysis Results</button>
       </Link>
 
       </main>
-      
-    
+
     </div>
   );
 }
