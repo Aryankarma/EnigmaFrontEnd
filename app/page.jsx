@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import styles from "./page.module.scss";
-import DragDrop from "./components/Drag&Drop";
+import DragDropAnalysis from "./components/Drag&Drop";
 // import Card, { DraggableCardWrapper } from './components/Drag&Drop'
 import Navbar from "./components/navbar";
 
@@ -19,11 +19,11 @@ export default function Home() {
           <h1>ENIGMA can help you!</h1>
         </div>
 
-        <DragDrop/> {/* componenet containing drag & drop functionality */}
+        <DragDropAnalysis/> {/* componenet containing drag & drop functionality */}
 
-      <Link className={styles.link} href="/conversation">
+        {/* <Link className={styles.link} href="/conversation">
           <button id={styles.analysisbutton}>Analysis Results</button>
-      </Link>
+        </Link> */}
 
       </main>
 

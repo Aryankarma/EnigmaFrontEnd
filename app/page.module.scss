@@ -23,7 +23,7 @@ $navbarGradEnd: #083964;
 }
 
 // size variables
-$navHeight: 5rem;
+$navHeight: 4.5rem;
 
 .parentContainer{
   width: 100vw;
@@ -52,6 +52,11 @@ $navHeight: 5rem;
   color: transparent;
 }
 
+.dragdropContainer{
+  height: 52vh;
+  @include flexCenter(column);
+  justify-content: space-between;
+}
 
 .main{
   @include flexCenter(column);
@@ -59,14 +64,14 @@ $navHeight: 5rem;
   height: calc(100vh - $navHeight);
   text-align: center;
   color: $darkText;
-  background: url(../public/img/background90final.png);
+  // background: url(../public/img/background90final.png);
   background-size: cover;
   position: fixed;
   width: 100%;
   bottom: 0;
   
   h1{
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 500;
   }
 
@@ -89,8 +94,8 @@ $navHeight: 5rem;
     // padding: 3.5rem 8rem;
     // border: 7px solid #BDBDBD;
     // border: 2px solid #eee;
-    height: 20rem;
-    width: 40rem;
+    height: 18rem;
+    width: 35rem;
     border-radius: 35px;
     @include flexCenter(column);
     justify-content: space-evenly;

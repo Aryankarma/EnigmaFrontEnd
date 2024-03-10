@@ -1,9 +1,15 @@
 'use client'
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from '../page.module.scss'
+import Link from 'next/link'
+import axios from 'axios';
+
+// import setFileAvailibility from './setFileState'
 
 const DragDropFiles = () => {
   const [files, setFiles] = useState(null);
+  const [fileAvailibility, setFileAvailibility] = useState("file not available")
+
   const inputRef = useRef();
 
   const DragOver = (event) => {
@@ -15,20 +21,55 @@ const DragDropFiles = () => {
     setFiles(event.dataTransfer.files)
   };
   
-  const Upload = () => {
-    
+  const Upload = async () => {
+    if(fileAvailibility == null){
+      alert("Please select a file...")
+    }else{
+
+      const formData = new FormData();
+      formData.append("file", files[0]);
+  
+      try{
+        const response = await fetch("http://localhost:8000/summarize/pdf", {
+          method: "POST",
+          body: formData
+        })  
+
+        if (!response.ok) {
+          throw new Error(`Error uploading file `, error);
+        }
+        console.log("file sent");
+
+      }catch (error) {
+        console.error('Error:', error);
+      }finally {
+        setFiles(null)
+      }
+    }
   };
 
+  useEffect(()=>{
+    files == null ? setFileAvailibility(null) : setFileAvailibility(files[0].name)
+  },[files])
+
   if (files) return (
-    <div className={styles.card}>
-      <h2>{files[0].name}</h2>      
-      <button className={styles.selectFileBtn} onClick={() => setFiles(null)}>Cancel</button>
+    <div className={styles.dragdropContainer}>
+      <div className={styles.card}>
+        <h2>{files[0].name}</h2>      
+        <button className={styles.selectFileBtn} onClick={() => setFiles(null)}>Cancel</button>
+      </div>
+
+      {/* <Link className={styles.link} href="/conversation"> */}
+        <button onClick={()=>Upload()} id={styles.analysisbutton}>Analysis Results</button>
+      {/* </Link> */}
+
+
     </div>
             
   )
 
   return (
-    <>
+    <div className={styles.dragdropContainer}>
         <div 
           className={styles.card}
           onDragOver={DragOver}
@@ -58,7 +99,12 @@ const DragDropFiles = () => {
           </div> 
 
         </div>
-    </>
+
+        {/* <Link className={styles.link} href="/conversation"> */}
+          <button onClick={()=>Upload()} id={styles.analysisbutton}>Analysis Results</button>
+        {/* </Link> */}
+
+    </div>
   );
 };
 

@@ -25,17 +25,21 @@ $navbarGradEnd: #1765A9;
     height: 100vh;
     color: $darkText;
     h2{
-        font-size: 28px;
+        font-size: 24px;
         font-weight: 600;
-        margin: 1.25rem 0;
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        transform: translate(-2.8%);
+        // transform: translate(-1.35%);
     }p, li{
-        font-size: 22px;
+        font-size: 18px;
         text-justify: inter-word;
         text-align: justify;
     }p{
         padding-left: 2rem;
     }ol{
-        padding-left: 4.125rem;
+        padding-left: 3.15rem;
     }
 
     overflow: hidden;
@@ -58,15 +62,15 @@ $navbarGradEnd: #1765A9;
     }
 }
 #containers{
-    padding-bottom: 3rem;
-    width: 65vw;
+    padding-bottom: 2rem;
+    width: 60vw;
 }
 .summary, .keypoints{
-    padding: 2rem 3rem;
-    outline: 1px solid #999;
+    // padding: 2rem 3rem;
+    // outline: 1px solid #ccc;
+    // background-color: #EDEDED;
     border-radius: 0 30px 30px 30px;
-    background-color: #EDEDED;
-}
+}   
 .inputbox{
     @include flexCenter(row);
     letter-spacing: 8px;
@@ -111,13 +115,14 @@ $navbarGradEnd: #1765A9;
         margin-left: .5rem;
         border-radius: 50px;
         aspect-ratio: 1 / 1;
-        background-color: white;
+        background-color: #fff;
 
         &:hover{
             .inputArrow{
                 transform: translate(10%, 0);
                 @include transition();
-            }         background-color: $lightBackground;
+            }    
+            background-color: transparent;
             border: 1px solid transparent;
             @include transition();
         }
