@@ -1,15 +1,14 @@
 'use client'
 import { useState, useEffect, useRef } from "react";
-import styles from '../page.module.scss'
-import Link from 'next/link'
-import axios from 'axios';
+import styles from '../page.module.scss';
+import { useRouter } from "next/navigation";
 
 // import setFileAvailibility from './setFileState'
 
 const DragDropFiles = () => {
   const [files, setFiles] = useState(null);
   const [fileAvailibility, setFileAvailibility] = useState("file not available")
-
+  const router = useRouter();
   const inputRef = useRef();
 
   const DragOver = (event) => {
@@ -38,7 +37,10 @@ const DragDropFiles = () => {
         if (!response.ok) {
           throw new Error(`Error uploading file `, error);
         }
-        console.log("file sent");
+
+        const result = await response.json();
+        window.sessionStorage.setItem("summary_response", JSON.stringify(result));
+        router.push("/conversation");
 
       }catch (error) {
         console.error('Error:', error);

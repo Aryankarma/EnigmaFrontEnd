@@ -1,9 +1,10 @@
-'use client'
-import Link from "next/link";
+'use client';
+
 import styles from "./convostyles.module.scss"
 import Navbar from "../components/navbar";
-import { useState, useEffect } from "react"
-import Image from 'next/image'
+import { useEffect, useState } from "react";
+import Image from 'next/image';
+import { useRouter } from "next/navigation";
 
 const data = {
     Summary: "The earliest forms of transportation were rudimentary, consisting mainly of carts and wagons pulled by animals. However, with the advent of the Industrial Revolution in the 18th century, the landscape of transportation underwent a dramatic transformation. Steam-powered vehicles emerged, offering faster and more efficient modes of travel. The invention of the automobile in the late 19th century revolutionized transportation yet again, paving the way for the mass production of cars and the establishment of the automotive industry. ",
@@ -11,6 +12,16 @@ const data = {
 }
 
 function Convo(){
+
+    const sessionSummaryData = window.sessionStorage.getItem("summary_response");
+    const router = useRouter();
+    
+    if (!sessionSummaryData) {
+        router.push("/");
+        return;
+    };
+
+    const summaryData = JSON.parse(sessionSummaryData);
 
     const [inputData, updateData] = useState("")
 
@@ -35,9 +46,10 @@ function Convo(){
                         src="/img/robotIcoEdit.png"
                         width={50}
                         height={50} 
+                        alt="roboIcon"
                     />
                 Summary-</h2>
-                <p className={styles.summary}>{data.Summary}</p>
+                <p className={styles.summary}>{summaryData.summary}</p>
             </div>
 
             {/* <div id={styles.containers}>
@@ -56,16 +68,17 @@ function Convo(){
                 <h2>
                     <Image
                         className={styles.inputArrow}
-                        src="/img/robotIcoEdit.png"
+                        src="/img/inputArrow.png"
                         width={50}
                         height={50} 
+                        alt="roboIcon"
                     />
-                Key Points-</h2>
-                <ol className={styles.keypoints}>
-                    {data.keyPoints.map((input, index)=>{
+                Key Entities-</h2>
+                <ul className={styles.keypoints}>
+                    {summaryData.key_entities.map((input, index)=>{
                         return <li key={index}>{input}</li>
                     })}
-                </ol>
+                </ul>
             </div>
 
         </div>  
