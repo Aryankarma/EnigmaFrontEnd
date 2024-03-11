@@ -57,7 +57,7 @@ const DragDropFiles = () => {
   if (files) return (
     <div className={styles.dragdropContainer}>
       <div className={styles.card}>
-        <h2>{files[0].name}</h2>      
+        <h4>{files[0].name}</h4>      
         <button className={styles.selectFileBtn} onClick={() => setFiles(null)}>Cancel</button>
       </div>
 
@@ -78,7 +78,7 @@ const DragDropFiles = () => {
           onDrop={Drop}
         >
           <div className={styles.dragAndDrop}>
-            <img className={styles.uploadLogo} src="/img/uploadLogo.png" alt="" />
+            <img className={styles.uploadLogo} src="/img/uploadLogo.png" alt="uploadLogo" />
             <h1>Drag & Drop document</h1>
           </div>
 
