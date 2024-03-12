@@ -7,19 +7,26 @@ import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { Content } from "next/font/google";
 
+const data = {
+    Summary: "The earliest forms of transportation were rudimentary, consisting mainly of carts and wagons pulled by animals. However, with the advent of the Industrial Revolution in the 18th century, the landscape of transportation underwent a dramatic transformation. Steam-powered vehicles emerged, offering faster and more efficient modes of travel. The invention of the automobile in the late 19th century revolutionized transportation yet again, paving the way for the mass production of cars and the establishment of the automotive industry. ",
+    keyPoints: ["Early transportation: Carts and wagons pulled by animals.","Industrial Revolution: Transformation of transportation.", 'Steam-powered vehicles: Faster and more efficient travel.', "Invention of the automobile: Revolutionized transportation.", "Mass production of cars: Establishment of the automotive industry.", "Invention of the automobile: Revolutionized transportation."],
+    Q: "What is this case about?",
+    A: "This case is about xyz"
+}
+
 function Convo(){
 
-    const sessionSummaryData = window.sessionStorage.getItem("summary_response");
-    const router = useRouter();
-    const [summarydataupdate, setsummarydataupdate] = useState("")
+    // const sessionSummaryData = window.sessionStorage.getItem("summary_response");
+    // const router = useRouter();
+    // const [summarydataupdate, setsummarydataupdate] = useState("")
 
-    if (!sessionSummaryData) {
-        router.push("/");
-        return;
-    };
+    // if (!sessionSummaryData) {
+    //     router.push("/");
+    //     return;
+    // };
 
-    console.log()
-    const summaryData = JSON.parse(sessionSummaryData);
+    // console.log()
+    // const summaryData = JSON.parse(sessionSummaryData);
     
     const [inputData, updateData] = useState("")
 
@@ -34,7 +41,7 @@ function Convo(){
     
 //   useEffect(()=>{
 
-    let data = ""
+    // let data = ""
 
     async function apifetch () {
       try{
@@ -52,14 +59,14 @@ function Convo(){
         console.log("aip not working")
       }
 
-      data = await dataraw.json();
+    //   data = await dataraw.json();
       console.log(data.content)
 
       }catch(error){
         console.log("got error: \n", error)
       }
     }
-    apifetch()
+    // apifetch()
 
 //   },[])
 
@@ -76,33 +83,74 @@ function Convo(){
 
             <div id={styles.containers}>
                 <h2> 
-                    <Image
-                        className={styles.inputArrow}
+                    {/* <Image
+                        className={styles.robotIconImg}
                         src="/img/robotIcoEdit.png"
                         width={50}
                         height={50} 
                         alt="roboIcon"
-                    />
+                    /> */}
+
+                    <img className={styles.robotIconImg} src="/img/robotIcoEdit.png" alt="roboIcon" />
+
                 Summary-</h2>
-                <p className={styles.summary}>{summaryData.summary}</p>
+                <p className={styles.summary}>{data.Summary}</p>
             </div>
 
             <div id={styles.containers}>
                 <h2>
-                <Image
-                        className={styles.inputArrow}
+                {/* <Image
+                        className={styles.robotIconImg}
                         src="/img/robotIcoEdit.png"
                         width={50}
                         height={50} 
                         alt="roboIcon"
-                    />
+                    /> */}
+
+                <img className={styles.robotIconImg} src="/img/robotIcoEdit.png" alt="roboIcon" />
+
+
                 Key Entities-</h2>
                 <ol className={styles.keypoints}>
-                    {summaryData.key_entities.map((input, index)=>{
-                        return <li key={index}>{input}</li>
+                    {console.log(data)}
+                    {data.keyPoints.map((input, index)=>{
+                        return <li key={index}>{input}</li> 
                     })}
                 </ol>   
 
+            </div>
+
+            
+            <div id={styles.containers}>
+                <h2 className={styles.marginTop1rem}> 
+                    {/* <Image
+                        className={styles.robotIconImg}
+                        src="/img/youLogo.png"
+                        width={40}
+                        height={40} 
+                        alt="roboIcon"
+                    /> */}
+
+                    <img className={styles.youLogo} src="/img/youLogo.png" alt="user logo" />
+
+                You</h2>
+                <p className={styles.que}>{data.Q}</p>
+            </div>
+            
+            <div id={styles.containers}>
+                <h2> 
+                    {/* <Image
+                        className={styles.robotIconImg}
+                        src="/img/robotIcoEdit.png"
+                        width={50}
+                        height={50} 
+                        alt="roboIcon"
+                    /> */}
+
+                    <img className={styles.robotIconImg} src="/img/robotIcoEdit.png" alt="roboIcon" />
+
+                Enigma</h2>
+                <p className={styles.ans}>{data.A}</p>
             </div>
 
         </div>  
