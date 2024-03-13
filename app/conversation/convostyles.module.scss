@@ -27,7 +27,7 @@ $navbarGradEnd: #1765A9;
     h2{
         font-size: 24px;
         font-weight: 600;
-        margin: 1rem 0;
+        margin: .5rem 0;
         display: flex;
         align-items: center;
         transform: translate(-2.8%);
@@ -64,6 +64,26 @@ $navbarGradEnd: #1765A9;
 #containers{
     padding-bottom: 2rem;
     width: 60vw;
+    .que{
+        padding: 1rem;
+        border: 1px solid #999;
+        background: #dedede30;
+        border-radius: 0 15px 15px 15px;
+        
+    }
+    .youLogo{
+        height: 35px;
+        width: 35px;
+        margin-left: 7.5px;
+        // margin-top: 1rem;
+    }
+    .marginTop1rem{
+        margin-top: 2.5rem;
+    }
+    .robotIconImg{
+        height: 50px;
+        width: 50px;
+    }
 }
 .summary, .keypoints{
     // padding: 2rem 3rem;
