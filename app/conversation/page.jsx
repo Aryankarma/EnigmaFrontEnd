@@ -7,26 +7,26 @@ import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { Content } from "next/font/google";
 
-const data = {
-    Summary: "The earliest forms of transportation were rudimentary, consisting mainly of carts and wagons pulled by animals. However, with the advent of the Industrial Revolution in the 18th century, the landscape of transportation underwent a dramatic transformation. Steam-powered vehicles emerged, offering faster and more efficient modes of travel. The invention of the automobile in the late 19th century revolutionized transportation yet again, paving the way for the mass production of cars and the establishment of the automotive industry. ",
-    keyPoints: ["Early transportation: Carts and wagons pulled by animals.","Industrial Revolution: Transformation of transportation.", 'Steam-powered vehicles: Faster and more efficient travel.', "Invention of the automobile: Revolutionized transportation.", "Mass production of cars: Establishment of the automotive industry.", "Invention of the automobile: Revolutionized transportation."],
-    Q: "What is this case about?",
-    A: "This case is about xyz"
-}
+// const data = {
+//     Summary: "The earliest forms of transportation were rudimentary, consisting mainly of carts and wagons pulled by animals. However, with the advent of the Industrial Revolution in the 18th century, the landscape of transportation underwent a dramatic transformation. Steam-powered vehicles emerged, offering faster and more efficient modes of travel. The invention of the automobile in the late 19th century revolutionized transportation yet again, paving the way for the mass production of cars and the establishment of the automotive industry. ",
+//     keyPoints: ["Early transportation: Carts and wagons pulled by animals.","Industrial Revolution: Transformation of transportation.", 'Steam-powered vehicles: Faster and more efficient travel.', "Invention of the automobile: Revolutionized transportation.", "Mass production of cars: Establishment of the automotive industry.", "Invention of the automobile: Revolutionized transportation."],
+//     Q: "What is this case about?",
+//     A: "This case is about xyz"
+// }
 
 function Convo(){
 
-    // const sessionSummaryData = window.sessionStorage.getItem("summary_response");
-    // const router = useRouter();
-    // const [summarydataupdate, setsummarydataupdate] = useState("")
+    const sessionSummaryData = window.sessionStorage.getItem("summary_response");
+    const router = useRouter();
+    const [summarydataupdate, setsummarydataupdate] = useState("")
 
-    // if (!sessionSummaryData) {
-    //     router.push("/");
-    //     return;
-    // };
+    if (!sessionSummaryData) {
+        router.push("/");
+        return;
+    };
 
     // console.log()
-    // const summaryData = JSON.parse(sessionSummaryData);
+    const summaryData = JSON.parse(sessionSummaryData);
     
     const [inputData, updateData] = useState("")
 
@@ -43,37 +43,35 @@ function Convo(){
 
     // let data = ""
 
-    async function apifetch () {
+    const query = "what is going on?"
+
+    async function apifetch (query) {
       try{
-        const dataraw = await fetch("http://localhost:8000/chat/faksdjfa", {
+        const dataraw = await fetch("http://34.29.38.173:8000/chat/session1", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        content: "what is going on?"
+        content: "This is the summary of a legal document: " + summaryData.summary + " Now this is my query on this data: " + query
       })
     });
     
       if(!dataraw.ok){
-        console.log("aip not working")
-      }
+        console.log("api not working")
+      } 
 
-    //   data = await dataraw.json();
+      data = await dataraw.json();
       console.log(data.content)
 
       }catch(error){
         console.log("got error: \n", error)
       }
     }
-    // apifetch()
+
+    apifetch(query)
 
 //   },[])
-
-    // console.log(summaryData)
-    // console.log("original text: \n" + summaryData.original_text)
-    // console.log("summary: \n" + summaryData.summary)
-    // console.log("key entities: \n" + summaryData.key_entities)
 
     return <div className={styles.parentContainer}>
 
@@ -94,7 +92,7 @@ function Convo(){
                     <img className={styles.robotIconImg} src="/img/robotIcoEdit.png" alt="roboIcon" />
 
                 Summary-</h2>
-                <p className={styles.summary}>{data.Summary}</p>
+                <p className={styles.summary}>{summaryData.summary}</p>
             </div>
 
             <div id={styles.containers}>
@@ -112,8 +110,7 @@ function Convo(){
 
                 Key Entities-</h2>
                 <ol className={styles.keypoints}>
-                    {console.log(data)}
-                    {data.keyPoints.map((input, index)=>{
+                    {summaryData.key_entities.map((input, index)=>{
                         return <li key={index}>{input}</li> 
                     })}
                 </ol>   
@@ -134,7 +131,7 @@ function Convo(){
                     <img className={styles.youLogo} src="/img/youLogo.png" alt="user logo" />
 
                 You</h2>
-                <p className={styles.que}>{data.Q}</p>
+                <p className={styles.que}> This is the question </p>
             </div>
             
             <div id={styles.containers}>
@@ -150,7 +147,7 @@ function Convo(){
                     <img className={styles.robotIconImg} src="/img/robotIcoEdit.png" alt="roboIcon" />
 
                 Enigma</h2>
-                <p className={styles.ans}>{data.A}</p>
+                <p className={styles.ans}> This is the question </p>
             </div>
 
         </div>  
