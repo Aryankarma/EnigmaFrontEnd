@@ -9,6 +9,8 @@ export const metadata = {
   description: 'Build with Love',
 }
 
+// add favicon
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

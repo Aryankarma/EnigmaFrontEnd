@@ -5,88 +5,86 @@ import Navbar from "../components/navbar";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
+import React from "react";
 
-const chatData = [
-    {
-        id: 1,
-        question: "who was nalini",
-        answer: "Nalini, a 28-year-old software engineer, was the victim in this case. She worked for a BPO company in Pune and used to travel to work by company transport or public transport, including autos. On the evening of October 7, 2019, she missed her usual transportation and was offered a lift by Sachin Mishra, one of the accused, near Reliance Mall on Nagar Road. She trusted them and placed herself in their custody, but they took advantage of her vulnerable situation and abducted her, subjecting her to gang rape multiple times, including at various locations such as Hadapsar, Manjari Phata, Abalwadi, Shankar Parvati Mangal Karyalaya, and Dargah at Chandan Nagar. After raping her, they brutally killed her by strangling her with a dupatta and crushing her face and head with heavy stones to conceal her identity and destroy evidence."
-    },{
-        id: 2,
-        question: "did nalini raised her voice after the incident?",
-        answer: "There is no information provided in the context you provided to suggest that Nalini raised her voice after the incident. In fact, it is mentioned that she missed her usual transportation and was offered a lift by one of the accused, Sachin Mishra, near Reliance Mall on Nagar Road. She trusted them and placed herself in their custody, which suggests that she may not have been aware of the danger she was in at the time. It is only after the incident that Nalini's parents successfully followed up with the investigation team and registered a complaint against the accused. Therefore, it can be inferred that Nalini did not raise her voice or report the incident to anyone immediately after it occurred."
-    },{
-        id: 3,
-        question: "what are some key aspects of this case i should focus on?",
-        answer:`Based on the context you provided, here are some key aspects of the case that you may want to focus on:
-        1. Gang Rape and Murder: The case involves a heinous crime of gang rape and murder, which is a serious violation of a person's physical and sexual autonomy. It highlights the need for strict laws and enforcement to protect women from such crimes.
-        2. Trust Misused: Nalini trusted the accused, Sachin Mishra, who offered her a lift near Reliance Mall on Nagar Road. This misuse of trust is a common tactic used by criminals to exploit their victims. It emphasizes the importance of being vigilant and aware of one's surroundings, especially when traveling alone at night.
-        3. Conspiracy: The case involves a conspiracy among multiple accused to commit the heinous crime. This highlights the need for effective investigation and prosecution to uncover the full extent of criminal activity and bring the perpetrators to justice.
-        4. Lack of Evidence Destruction: Despite the efforts of the accused to destroy evidence, the prosecution was able to gather sufficient evidence to prove their guilt beyond reasonable doubt. This underscores the importance of thorough investigation and collection of evidence in ensuring that criminals are brought to justice.`
-    }
-]
+const chatData = []
 
 function Convo(){
 
+  
     if (!window){
         return <div></div>
     }
 
     const sessionSummaryData = window.sessionStorage.getItem("summary_response");
     const router = useRouter();
-    const [summarydataupdate, setsummarydataupdate] = useState("")
 
     if (!sessionSummaryData) {
         router.push("/");
-        return;
-    };
+        return null;
+    }
 
     const summaryData = JSON.parse(sessionSummaryData);
 
-    const [inputQuery, updateQuery] = useState("")
+    const [inputQuery, setInputQuery] = useState("");
+    const [chatData, setChatData] = useState([]);
 
     function handleInputChange(e){
-        updateQuery(e.target.value)
+        setInputQuery(e.target.value);
     }
 
-    function handleSubmit(){
-        apifetch(inputQuery)
+    async function handleSubmit(){
+        if (inputQuery.trim() === "") return;
+
+        const dataTemplate = {
+            id: chatData.length + 1,
+            question: inputQuery,
+            answer: ""
+        };
+
+        setChatData(prevChatData => [...prevChatData, dataTemplate]); 
+        document.querySelector("#query").value = "";
+
+        apifetch(inputQuery);
     }
 
     const handleKeyPressOnInput = (e) => {
-        if(e.key == "Enter" && inputQuery.replace(/\s/g, '').length > 0){
+        if(e.key === "Enter" && inputQuery.trim() !== ""){
             e.preventDefault();
-            QnAData.questions.push(inputQuery)
-            document.querySelector("#query").value = "";
-            handleSubmit()
+            handleSubmit();
         }
     }
 
-    
-    let data = ""
+    async function apifetch(query) {
+        try {
+            const dataraw = await fetch("http://localhost:8000/chat/" + summaryData.session_id, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    content: query
+                })
+            });
 
-    async function apifetch (query) { // 34.29.38.173
-      try{
-        const dataraw = await fetch("http://localhost:8000/chat/" + summaryData.session_id, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        content: query
-      })
-    });
-    
-      if(!dataraw.ok){
-        console.log("api not working")
-      }
+            if(!dataraw.ok){
+                console.log("API not working");
+                return;
+            }
 
-      data = await dataraw.json();
-      console.log(data.content)
+            const data = await dataraw.json();
 
-      }catch(error){
-        console.log("got error: \n", error)
-      }
+            setChatData(prevChatData => {
+                const updatedChatData = [...prevChatData];
+                updatedChatData[updatedChatData.length - 1].answer = data.content;
+                console.log(chatData)
+                return updatedChatData;
+            });
+
+
+        } catch(error) {
+            console.log("Got error:", error);
+        }
     }
 
     return <div className={styles.parentContainer}>
@@ -100,29 +98,23 @@ function Convo(){
 
                     <img className={styles.robotIconImg} src="/img/robotIcoEdit.png" alt="roboIcon" />
 
-                Summary-</h2>
+                    Summary-</h2>
+
                 <p className={styles.summary}>{summaryData.summary}</p>
-            </div>
 
-            <div id={styles.containers}>
-                <h2>
+                <h2 className={styles.secondhead}>Key Entities-</h2>
 
-                <img className={styles.robotIconImg} src="/img/robotIcoEdit.png" alt="roboIcon" />
-
-                Key Entities-</h2>
-                <ol className={styles.keypoints}>
+                <ul className={styles.keypoints}>
                     {summaryData.key_entities.map((input, index)=>{
                         return <li key={index}>{input}</li> 
                     })}
-                </ol>   
+                </ul> 
 
             </div>
 
-            
 
-            {chatData.map((input)=>{
-
-               return <>
+            {chatData.map((input, index)=>{
+               return <React.Fragment key={index}>
                     <div id={styles.containers}>
                     <h2 className={styles.marginTop1rem}>
                         <img className={styles.youLogo} src="/img/youLogo.png" alt="user logo" />
@@ -136,7 +128,7 @@ function Convo(){
                     Enigma</h2>
                     <p key={input.id} className={styles.ans}> {input.answer} </p>
                     </div>
-               </>
+               </React.Fragment>
             })}
 
         </div>  
@@ -154,7 +146,7 @@ function Convo(){
                     placeholder="Ask more on it" >
                 </textarea>
 
-                <div onClick={(event)=>handleSubmit(event)} className={styles.imageContainer}>
+                <div onClick={(e)=>handleSubmit(e)} className={styles.imageContainer}>
                     <Image
                         className={styles.inputArrow}
                         src="/img/inputArrow.png"

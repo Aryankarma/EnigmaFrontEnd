@@ -83,6 +83,8 @@ $navbarGradEnd: #1765A9;
     .robotIconImg{
         height: 50px;
         width: 50px;
+    }.secondhead{
+        padding: 20px 50px;
     }
 }
 .summary, .keypoints{
@@ -90,6 +92,23 @@ $navbarGradEnd: #1765A9;
     // outline: 1px solid #ccc;
     // background-color: #EDEDED;
     border-radius: 0 30px 30px 30px;
+    list-style-type: none;
+    @include flexCenter(row);
+    justify-content: flex-start;
+    gap: 2rem;
+    padding-left: 20px;
+    cursor: default;
+    li{
+        padding: .5rem 1.3rem;
+        border-radius: 30px;
+        background-color: #353535;
+        box-shadow: 1px 2px 3px #999;
+        color: white;
+        &:hover{
+            opacity: .95;
+            @include transition;
+        }
+    }
 }   
 .inputbox{
     @include flexCenter(row);
