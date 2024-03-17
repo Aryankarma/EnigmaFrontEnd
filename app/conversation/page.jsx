@@ -2,7 +2,7 @@
 
 import styles from "./convostyles.module.scss"
 import Navbar from "../components/navbar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -10,7 +10,6 @@ import React from "react";
 const chatData = []
 
 function Convo(){
-
   
     if (!window){
         return <div></div>
@@ -28,6 +27,24 @@ function Convo(){
 
     const [inputQuery, setInputQuery] = useState("");
     const [chatData, setChatData] = useState([]);
+    const chatContainerRef = useRef(null);
+
+    // var initialScrollHeight = 0; 
+
+    // useEffect(()=>{
+    //     initialScrollHeight = document.querySelector("#\\#main").offsetHeight;
+    // },[])
+
+    // const scrollToBottom = (initialScrollHeight) => {
+    //     var currentScrollHeight = document.querySelector("#\\#main").scrollHeight; 
+    //     console.log("initialScrollHeight", initialScrollHeight)
+    //     console.log("currentScrollHeight", currentScrollHeight)
+    //     console.log("scrollTo", currentScrollHeight - initialScrollHeight)
+
+    //     let scrollHeight = currentScrollHeight - initialScrollHeight; 
+
+    //     document.querySelector("#\\#main").scrollTop = scrollHeight;
+    // }
 
     function handleInputChange(e){
         setInputQuery(e.target.value);
@@ -44,8 +61,21 @@ function Convo(){
 
         setChatData(prevChatData => [...prevChatData, dataTemplate]); 
         document.querySelector("#query").value = "";
+        
+        scrollToBottom();
+
+        // document.querySelector("#\\#main").scrollTop = 500;
 
         apifetch(inputQuery);
+    }
+
+    const mainElement = document.querySelector("#\\#main")
+
+    function scrollToBottom() {
+        // console.log("offsetHeight ", mainElement.offsetHeight)
+        // console.log("scrollHeight ", mainElement.scrollHeight)
+
+        mainElement.scrollTop = mainElement.offsetHeight;
     }
 
     const handleKeyPressOnInput = (e) => {
@@ -81,6 +111,8 @@ function Convo(){
                 return updatedChatData;
             });
 
+            scrollToBottom();
+            console.log(document.querySelector("#\\#main").scrollHeight)
 
         } catch(error) {
             console.log("Got error:", error);
@@ -91,7 +123,7 @@ function Convo(){
 
         <Navbar/>
 
-        <div className={styles.main}>
+        <div id="#main" className={styles.main}>
 
             <div id={styles.containers}>
                 <h2> 
@@ -143,6 +175,7 @@ function Convo(){
                     type="text" 
                     name="query" 
                     id="query" 
+                    autoFocus={true}
                     placeholder="Ask more on it" >
                 </textarea>
 
@@ -156,6 +189,10 @@ function Convo(){
                     />
                 </div>
             </form>
+
+            {/* <button onClick={scrollToBottom} className={styles.scrollbutton}>
+                <h2>down</h2>
+            </button> */}
         </div>
     </div>  
 
