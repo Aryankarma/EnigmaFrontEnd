@@ -11,7 +11,7 @@ const chatData = []
 
 function Convo(){
   
-    if (!window){
+    if (typeof window === 'undefined'){
         return <div></div>
     }
 

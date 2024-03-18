@@ -103,7 +103,8 @@ $navbarGradEnd: #1765A9;
     list-style-type: none;
     @include flexCenter(row);
     justify-content: flex-start;
-    gap: 2rem;
+    gap: 20px;
+    flex-wrap: wrap;
     padding-left: 20px;
     cursor: default;
     li{
