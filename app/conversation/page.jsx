@@ -24,8 +24,12 @@ function Convo() {
 
   const summaryData = JSON.parse(sessionSummaryData);
 
+  // console.log("summaryData", summaryData.summary[0].summary_text);
+
   const [inputQuery, setInputQuery] = useState("");
   const [chatData, setChatData] = useState([]);
+  const [text, setText] = useState('');
+
   const chatContainerRef = useRef(null);
 
   // var initialScrollHeight = 0;
@@ -45,10 +49,37 @@ function Convo() {
   //     document.querySelector("#\\#main").scrollTop = scrollHeight;
   // }
 
-  function handleInputChange(e) {
-    setInputQuery(e.target.value);
+  function increaseRow (){
+    console.log(document.querySelector("#query").style)
   }
 
+  function TextWidthChecker(text) {
+    const span = document.createElement('span');
+    span.style.visibility = 'hidden';
+    span.style.whiteSpace = 'pre';
+    span.style.position = 'absolute';
+    span.style.top = '-9999px';
+    document.body.appendChild(span);
+    
+    span.textContent = text;
+    const width = span.offsetWidth;
+    const maxWidth = document.querySelector("#query").offsetWidth;
+    
+    if(width > (maxWidth - 50))
+      increaseRow()
+
+    console.log('Width of the text:', width);
+    
+    document.body.removeChild(span);
+  }
+
+  function handleInputChange(e) {
+    setText(e.target.value);
+    
+    TextWidthChecker(e.target.value);
+    
+    setInputQuery(e.target.value);
+  }
   async function handleSubmit() {
     if (inputQuery.trim() === "") return;
 
@@ -117,17 +148,18 @@ function Convo() {
       });
 
       scrollToBottom();
-      console.log(document.querySelector("#\\#main").scrollHeight);
+      console.log(document.querySelector("#main").scrollHeight);
     } catch (error) {
       console.log("Got error:", error);
     }
   }
 
+
   return (
     <div className={styles.parentContainer}>
       <Navbar />
 
-      <div id="#main" className={styles.main}>
+      <div id="main" className={styles.main}>
         <div id="c_con" style={{ overflow: "scroll", width: "100vw", height: "calc(100vh - 4.5rem)", scrollBehavior: "smooth" }}>
           <div id={styles.containers}>
             <h2>
@@ -138,7 +170,7 @@ function Convo() {
               />
               Summary-
             </h2>
-            <p className={styles.summary}>{summaryData.summary}</p>
+            <p className={styles.summary}>{summaryData.summary[0].summary_text}</p>
             <h2 className={styles.secondhead}>Key Entities-</h2>
             <ul className={styles.keypoints}>
               {summaryData.key_entities.map((input, index) => {
@@ -159,8 +191,7 @@ function Convo() {
                     You
                   </h2>
                   <p key={input.id} className={styles.que}>
-                    {" "}
-                    {input.question}{" "}
+                    {input.question}
                   </p>
                 </div>
                 <div id={styles.containers}>
@@ -173,8 +204,7 @@ function Convo() {
                     Enigma
                   </h2>
                   <p key={input.id} className={styles.ans}>
-                    {" "}
-                    {input.answer}{" "}
+                    {input.answer}
                   </p>
                 </div>
               </React.Fragment>
@@ -185,6 +215,7 @@ function Convo() {
         <div>
           <div className={styles.inputbox}>
             <form action="" method="post">
+            
               <textarea
                 onChange={(e) => handleInputChange(e)}
                 onKeyDown={(e) => handleKeyPressOnInput(e)}
@@ -192,8 +223,8 @@ function Convo() {
                 name="query"
                 id="query"
                 autoFocus={true}
-                placeholder="Ask more on it"
-              ></textarea>
+                placeholder="Ask more on it"      
+             ></textarea>
               <div
                 onClick={(e) => handleSubmit(e)}
                 className={styles.imageContainer}
@@ -206,6 +237,7 @@ function Convo() {
                   alt="input arrow"
                 />
               </div>
+
             </form>
           </div>
         </div>
