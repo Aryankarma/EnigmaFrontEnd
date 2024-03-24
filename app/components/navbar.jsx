@@ -6,8 +6,8 @@ export default function Navbar(){
       <Image
         className={styles.enigmaLogo}
         src="/img/enigmalogo.png"
-        width={250}
-        height={60} 
+        width={275}
+        height={65} 
         alt="enigmaIcon"
         />
     {/* <h1 className={styles.enigma}>ENIGMA</h1>

@@ -1,4 +1,4 @@
-$lightBackground: #f2f2f2;
+$lightBackground: #fdfdfd;
 $darkText: #222222;
 $dialougeBackground: #f2efef;
 $chatDialougeBackground: #EDEDED;
@@ -22,6 +22,36 @@ $navbarGradEnd: #083964;
   transition: 300ms ease-in-out;
 }
 
+@keyframes fade{
+  0%{
+      opacity: 0%;
+  }
+  100%{
+      opacity: 100%;
+  }
+}
+
+
+.loadingContainer {
+  width: 10px;
+  height: 10px;
+  border: 10px solid #fff;
+  border-top-color: #999;
+  margin-left: 10px;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin{
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+
 // size variables
 $navHeight: 3.75rem;
 
@@ -30,6 +60,7 @@ $navHeight: 3.75rem;
   height: 100vh;
   background-color: $lightBackground;
   color: $darkText;
+  animation: 250ms fade ease-in-out;
 }
 
 .nav{
@@ -46,6 +77,9 @@ $navHeight: 3.75rem;
   text-align: center;
   background-color: white;
   opacity: .956;
+  background: url('../public/img/EnigmaBackground.png');
+  background-size: cover;
+
 }
 
 .enigma{
@@ -60,7 +94,7 @@ $navHeight: 3.75rem;
 
   // position: absolute;
 
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 800;
   background-image: url('../public/img/enigmaBackgrounddark.png');
   /* opacity: 0.9; */
@@ -104,7 +138,7 @@ $navHeight: 3.75rem;
 }
 
 .dragdropContainer{
-  height: 60vh;
+  height: 52vh;
   @include flexCenter(column);
   justify-content: space-between;
 }
@@ -122,8 +156,12 @@ $navHeight: 3.75rem;
   bottom: 0;
   
   h1{
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 500;
+  }
+
+  .analysisbutton2{
+    display: flex;
   }
 
   #analysisbutton{
@@ -135,7 +173,8 @@ $navHeight: 3.75rem;
     font-weight: 500;
     color: $lightBackground;
     letter-spacing: .5px;
-    scale: .85;
+    transform: scale(0.9);
+
       &:hover{
         opacity: .80;
         @include transition;
@@ -153,9 +192,10 @@ $navHeight: 3.75rem;
     justify-content: space-evenly;
     // gap: 1.75rem;
     background-color: $dialougeBackground;
-    box-shadow: 0 0 35px 7px rgba(0,0,0,20%);
-    scale: .85;
-
+    box-shadow: 0 0 35px 7px rgba(0,0,0,15%);
+    transform: scale(0.9);
+    padding: 2rem;
+    word-break: break-all;
     .dragAndDrop{
       @include flexCenter(row);
       gap: 15px;
@@ -173,6 +213,8 @@ $navHeight: 3.75rem;
       font-weight: 600;
       color: $darkText;
       letter-spacing: .5px;
+      transform: scale(0.9);
+
       &:hover{
         opacity: .8;
         @include transition();
@@ -287,33 +329,6 @@ $navHeight: 3.75rem;
   }    
 }
 
-/* Large smartphones and small tablets */
-@media only screen and (min-width : 768px) and (max-width : 1024px){
-  .main{
-
-  }   
-}
-
-// /* Medium tablets (iPad 2, Galaxy Tab 10.1, etc.) */
-// @media only screen and (min-width : 1024px){
-//   .main{
-//     background: #333;
-//   }    
-// }
-
-// /* Large tablets and small laptops (MacBook Air 11", etc.) */
-// @media only screen and (min-width : 1200px){
-//   .main{
-//     background: #444;
-//   }    
-// }
-
-
-
-
-// unnessasary
-
-
 .container {
   display: flex;
   flex-direction: column;
@@ -337,7 +352,6 @@ $navHeight: 3.75rem;
 .active {
   background-color: #5f5959;
 }
-
 
 .list-item {
   display: flex;
@@ -368,5 +382,3 @@ $navHeight: 3.75rem;
   border: 2px solid #34d44f;
   opacity: 0.2;
 }
-
-

@@ -1,4 +1,4 @@
-$lightBackground: #f2f2f2;
+$lightBackground: #fdfdfd;
 $darkText: #222222;
 $dialougeBackground: #f2efef;
 $chatDialougeBackground: #EDEDED;
@@ -17,15 +17,26 @@ $navbarGradEnd: #1765A9;
 }
 
 @mixin transition{
-    transition: 300ms ease-in-out;
+    transition: 300ms ease-in-out; 
+}
+
+@keyframes fade{
+    0%{
+        opacity: 0%;
+    }
+    100%{
+        opacity: 100%;
+    }
 }
 
 .parentContainer{
     width: 100vw;
     height: 100vh;
     color: $darkText;
-    h2{
-        font-size: 22px;
+    animation: 250ms fade ease-in-out;
+
+    h2,h1{
+        font-size: 20px;
         font-weight: 600;
         margin: .5rem 0;
         display: flex;
@@ -33,8 +44,8 @@ $navbarGradEnd: #1765A9;
         transform: translate(-2.8%);
         // transform: translate(-1.35%);
     }p, li{
-        font-size: 16px;
-        letter-spacing: .5px;
+        font-size: 18px;
+        text-justify: inter-word;
         text-align: justify;
     }p{
         padding-left: 2rem;
@@ -43,6 +54,28 @@ $navbarGradEnd: #1765A9;
     }
 
     overflow: hidden;
+}
+
+#main{
+    overflow: hidden;
+}
+
+#c_con{
+    &::-webkit-scrollbar {
+        width: 5px ;
+    }
+  
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    
+    &::-webkit-scrollbar-thumb {    
+        background: #888;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 }
 
 .main{
@@ -57,12 +90,9 @@ $navbarGradEnd: #1765A9;
     flex-direction: column;
     background-color: $lightBackground;
 
-    &::-webkit-scrollbar{
-        display: none;
-    }
 }
 #containers{
-    padding-bottom: 1.5rem;
+    padding-bottom: 2rem;   
     width: 60vw;
     margin: auto;
     .que{
@@ -70,11 +100,13 @@ $navbarGradEnd: #1765A9;
         border: 1px solid #999;
         background: #dedede30;
         border-radius: 0 15px 15px 15px;
+        
     }
     .youLogo{
         height: 35px;
         width: 35px;
         margin-left: 6.5px;
+        // margin-top: 1rem;
     }
     .marginTop1rem{
         margin-top: 2.5rem;
@@ -83,7 +115,7 @@ $navbarGradEnd: #1765A9;
         height: 50px;
         width: 50px;
     }.secondhead{
-        padding: 20px 50px 10px 50px;
+        padding: 20px 50px;
     }
 }
 
@@ -94,6 +126,10 @@ $navbarGradEnd: #1765A9;
     border: 1px solid #999;
     border-radius: 10px;
 }
+.tagContainer{
+    height: auto;
+    width: auto;
+}
 .summary, .keypoints{
     // padding: 2rem 3rem;
     // outline: 1px solid #ccc;
@@ -102,48 +138,76 @@ $navbarGradEnd: #1765A9;
     list-style-type: none;
     @include flexCenter(row);
     justify-content: flex-start;
-    gap: 20px;
+    gap: 10px;
     flex-wrap: wrap;
     padding-left: 20px;
     cursor: default;
-    li{
-        padding: .5rem 1.5rem;
+    li, label{
+        padding: .5rem 1.3rem;
         border-radius: 30px;
         background-color: #353535;
-        box-shadow: 1px 2px 3px #999;
+        box-shadow: 1px 2px 3px #ccc;
         color: white;
+        height: 30px;
+        width: 60px;
+        border: 1px solid transparent;
+        -webkit-user-select: none; /* Safari */
         &:hover{
             opacity: .95;
+            border: 1px solid black;
             @include transition;
         }
     }
-}   
+
+    input[type="checkbox"]:checked + label {
+        background-color: rgb(111, 164, 237);
+    }    
+}
+
+.tempbutton{
+    padding: 20px;
+}  
+
+.keypoints {
+    gap: 25px 15px;
+    li, label{
+        font-size: 14px !important;
+        color: #053781;
+        background: rgb(213 230 253);
+        font-weight: 600;
+        &:hover{
+            background: rgb(111 164 237);
+        }
+    }
+    // &:active{
+    //     background: blue;
+    // }
+}
 .inputbox{
     @include flexCenter(row);
     letter-spacing: 8px;
     width: 100vw;
     z-index: 2;
     bottom: 0;
-    height: 3.5rem;
     margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
 
     form{
         @include flexCenter(row);
-        position: absolute;
-        bottom: 10px;
     }
 
     input, textarea{
-        height: 4rem;
+        height: 4.5rem;
         width: 50vw;
-        padding: .5rem 1.75rem;
+        padding: 1.5rem 1.75rem;
         border-radius: 4rem;
         border: 1px solid #999;
         resize: none;
         font-family: "Be Vietnam Pro", sans-serif;
         font-weight: 400;
         font-size: 18px;
-
 
         &::-webkit-scrollbar{
             visibility: hidden;
@@ -177,3 +241,99 @@ $navbarGradEnd: #1765A9;
         }
     }
 }
+
+
+.tagsComponentDiv{
+    border-radius: 0 30px 30px 30px;
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding-left: 20px;
+    cursor: default;
+    width: 50vw;
+}
+
+.tags{
+    letter-spacing: 0;
+    transform: translate(0, 45%);
+    z-index: 2;
+
+    label{
+        padding: 0.5rem 1.3rem;
+        border-radius: 30px;
+        box-shadow: 1px 2px 3px #ccc;
+        height: 30px;
+        width: 60px;
+        border: 1px solid transparent;
+        -webkit-user-select: none;
+        font-size: 14px !important;
+        color: #fff;
+        background-color: #111;
+        font-weight: 600;
+        animation: 200ms fade ease-in-out;
+
+        &:hover{
+            opacity: 0.9;
+            background-color: #333;
+            border: 1px solid #333;
+            transition: 300ms ease-in-out;
+        }
+    }
+}
+
+.tagsComponentDiv{
+    border-radius: 0 30px 30px 30px;
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding-left: 20px;
+    cursor: default;
+    width: 50vw;
+}
+
+.tags{
+    letter-spacing: 0;
+    transform: translate(0, 45%);
+    z-index: 2;
+
+    span{
+        padding: 0.5rem 1.3rem;
+        border-radius: 30px;
+        box-shadow: 1px 2px 3px #ccc;
+        height: 30px;
+        width: 60px;
+        border: 1px solid transparent;
+        -webkit-user-select: none;
+        font-size: 14px !important;
+        color: #fff;
+        background-color: #111;
+        font-weight: 600;
+        animation: 200ms fade ease-in-out;
+
+        &:hover{
+            opacity: 0.9;
+            background-color: #333;
+            border: 1px solid #333;
+            transition: 300ms ease-in-out;
+        }
+    }
+}
+
+@keyframes fade{
+    0%{
+        opacity: 0%;
+    }
+    100%{
+        opacity: 100%;
+    }
+  }

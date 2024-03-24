@@ -1,9 +1,10 @@
 import styles from "./page.module.scss";
 import DragDropAnalysis from "./components/Drag&Drop";
 // import Card, { DraggableCardWrapper } from './components/Drag&Drop'
-import Navbar from "./components/navbar";
+import Navbar from "./components/Navbar";
 
 export default function Home() {
+
   return (
     <div className={styles.parentContainer}>
 

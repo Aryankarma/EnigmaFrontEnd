@@ -1,113 +1,62 @@
 "use client";
-
 import styles from "./convostyles.module.scss";
-import Navbar from "../components/navbar";
-import { useEffect, useState, useRef } from "react";
+import Navbar from "../components/Navbar";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React from "react";
+import { fetchSessionData } from "./fetchData";
+import TagsComponent from '../components/TagsComponent'
 
-const chatData = [];
+const sessionData ={
+    key_entities: ["keuEntiti1", "setSessionData","useState","setChatData","fetchSessionData"] , 
+    summary: "This is the only summary you will get"
 
-function Convo() {
-  // if (typeof window === 'undefined'){
-  //     return <div></div>
-  // }
+}
 
-  const sessionSummaryData = window.sessionStorage.getItem("summary_response");
-  const router = useRouter();
+function Convo({ params }) {
+//   const session_id = params.id;
+//   const [sessionData, setSessionData] = useState(null);
 
-  if (!sessionSummaryData) {
-    router.push("/");
-    return null;
-  }
-
-  const summaryData = JSON.parse(sessionSummaryData);
-
-  // console.log("summaryData", summaryData.summary[0].summary_text);
-
-  const [inputQuery, setInputQuery] = useState("");
+//   const [inputQuery, setInputQuery] = useState("");
   const [chatData, setChatData] = useState([]);
-  const [text, setText] = useState('');
+  const [keys, setkeys] = useState([])
 
-  const chatContainerRef = useRef(null);
+//   useEffect(() => {
+//     fetchSessionData(session_id).then(({ data, error }) => {
+//       if (error) {
+//         setSessionData(null);
+//       } else setSessionData(data);
+//     });
+//   }, []);
 
-  // var initialScrollHeight = 0;
+  // useEffect(() => {
+  //   // if (sessionData) setChatData(sessionData.messages);
+  // }, [sessionData]);
 
-  // useEffect(()=>{
-  //     initialScrollHeight = document.querySelector("#\\#main").offsetHeight;
-  // },[])
+//   useEffect(()=>{
+//     scrollToBottom();
+//   },[chatData])
 
-  // const scrollToBottom = (initialScrollHeight) => {
-  //     var currentScrollHeight = document.querySelector("#\\#main").scrollHeight;
-  //     console.log("initialScrollHeight", initialScrollHeight)
-  //     console.log("currentScrollHeight", currentScrollHeight)
-  //     console.log("scrollTo", currentScrollHeight - initialScrollHeight)
-
-  //     let scrollHeight = currentScrollHeight - initialScrollHeight;
-
-  //     document.querySelector("#\\#main").scrollTop = scrollHeight;
-  // }
-
-  function increaseRow (){
-    console.log(document.querySelector("#query").style)
-  }
-
-  function TextWidthChecker(text) {
-    const span = document.createElement('span');
-    span.style.visibility = 'hidden';
-    span.style.whiteSpace = 'pre';
-    span.style.position = 'absolute';
-    span.style.top = '-9999px';
-    document.body.appendChild(span);
-    
-    span.textContent = text;
-    const width = span.offsetWidth;
-    const maxWidth = document.querySelector("#query").offsetWidth;
-    
-    if(width > (maxWidth - 50))
-      increaseRow()
-
-    console.log('Width of the text:', width);
-    
-    document.body.removeChild(span);
-  }
-
-  function handleInputChange(e) {
-    setText(e.target.value);
-    
-    TextWidthChecker(e.target.value);
-    
-    setInputQuery(e.target.value);
-  }
   async function handleSubmit() {
     if (inputQuery.trim() === "") return;
 
     const dataTemplate = {
-      id: chatData.length + 1,
-      question: inputQuery,
-      answer: "",
+      role: "user",
+      content: inputQuery,
     };
 
     setChatData((prevChatData) => [...prevChatData, dataTemplate]);
     document.querySelector("#query").value = "";
 
-    scrollToBottom();
-
-    // document.querySelector("#\\#main").scrollTop = 500;
-
-    apifetch(inputQuery);
+    // apifetch(inputQuery);
   }
 
-  const mainElement = document.querySelector("#\\#main");
+  // const mainElement = document.querySelector("#\\#main");
 
   function scrollToBottom() {
-    // console.log("offsetHeight ", mainElement.offsetHeight)
-    // console.log("scrollHeight ", mainElement.scrollHeight)
-
-    mainElement.scrollTop = mainElement.scrollHeight;
-    const el = document.querySelector("#c_con")
-    el.scrollBy(0, el.scrollHeight)
+    // mainElement.scrollTop = mainElement.scrollHeight;
+    const el = document.querySelector("#c_con");
+    el ? el.scroll(0, el.scrollHeight) : null
   }
 
   const handleKeyPressOnInput = (e) => {
@@ -117,10 +66,30 @@ function Convo() {
     }
   };
 
+  const updateCheckBoxes=(e)=>{
+    const keycurrent = e.target.innerHTML
+    console.log("Thds is from parent function")
+    setkeys(prevKeys => {
+      if(keys){
+        if(keys.includes(keycurrent)){
+          return keys.filter(item => item !== keycurrent);
+        }else{
+          return [...prevKeys, keycurrent]
+        }
+      }
+    })
+  }
+
+//   useEffect(() => {
+//     console.log(keys);
+//   }, [keys]);
+
+
+
   async function apifetch(query) {
     try {
       const dataraw = await fetch(
-        "http://localhost:8000/chat/" + summaryData.session_id,
+        "http://localhost:8000/chat/" + sessionData._session_id,
         {
           method: "POST",
           headers: {
@@ -138,29 +107,39 @@ function Convo() {
       }
 
       const data = await dataraw.json();
-      console.log(data);
+      // console.log(data);
 
       setChatData((prevChatData) => {
-        const updatedChatData = [...prevChatData];
-        updatedChatData[updatedChatData.length - 1].answer = data;
-        console.log(chatData);
+        const updatedChatData = [...prevChatData, { role: "assistant", content: data}]
+        // console.log(chatData);
         return updatedChatData;
       });
 
-      scrollToBottom();
-      console.log(document.querySelector("#main").scrollHeight);
+      // console.log(document.querySelector("#\\#main").scrollHeight);
     } catch (error) {
       console.log("Got error:", error);
     }
   }
 
+//   if (!sessionData) {
+//     return <div>Loading...</div>;
+//   }
 
-  return (
+
+return (
     <div className={styles.parentContainer}>
       <Navbar />
 
-      <div id="main" className={styles.main}>
-        <div id="c_con" style={{ overflow: "scroll", width: "100vw", height: "calc(100vh - 4.5rem)", scrollBehavior: "smooth" }}>
+      <div style={{overflow:"hidden"}} id="#main" className={styles.main}>
+        <div
+          id="c_con"
+          style={{
+            overflowY: "scroll",
+            width: "100vw",
+            height: "calc(100vh - 4.5rem)",
+            scrollBehavior: "smooth",
+          }}
+        >
           <div id={styles.containers}>
             <h2>
               <img
@@ -170,61 +149,69 @@ function Convo() {
               />
               Summary-
             </h2>
-            <p className={styles.summary}>{summaryData.summary[0].summary_text}</p>
-            <h2 className={styles.secondhead}>Key Entities-</h2>
+              <div style={{whiteSpace: "break-spaces", lineHeight: "1.5rem"}} className={styles.summary}>{sessionData.summary}</div>
+            <h2 className={styles.secondhead}>Key entities-</h2>
             <ul className={styles.keypoints}>
-              {summaryData.key_entities.map((input, index) => {
-                return <li key={index}>{input}</li>;
+              {sessionData.key_entities.map((input, index) => {
+                return <div key={index} className={styles.tagContainer}>
+                  <input style={{display:"none"}} className={styles.checkTag} id={`${"checkTag"}` + index } type="checkbox"/>
+                  <label onClick={(e)=>updateCheckBoxes(e)} htmlFor={`${"checkTag"}` + index } key ={index}>{input}</label>
+                </div> 
               })}
             </ul>
           </div>
           {chatData.map((input, index) => {
             return (
               <React.Fragment key={index}>
-                <div id={styles.containers}>
-                  <h2 className={styles.marginTop1rem}>
-                    <img
-                      className={styles.youLogo}
-                      src="/img/youLogo.png"
-                      alt="user logo"
-                    />
-                    You
-                  </h2>
-                  <p key={input.id} className={styles.que}>
-                    {input.question}
-                  </p>
-                </div>
-                <div id={styles.containers}>
-                  <h2>
-                    <img
-                      className={styles.robotIconImg}
-                      src="/img/robotIcoEdit.png"
-                      alt="roboIcon"
-                    />
-                    Enigma
-                  </h2>
-                  <p key={input.id} className={styles.ans}>
-                    {input.answer}
-                  </p>
-                </div>
+                {input.role === "user" ? (
+                  <div id={styles.containers}>
+                    <h2 className={styles.marginTop1rem}>
+                      <img
+                        className={styles.youLogo}
+                        src="/img/youLogo.png"
+                        alt="user logo"
+                      />
+                      You
+                    </h2>
+                    <p key={input.id} className={styles.que}>
+                      {input.content}
+                    </p>
+                  </div>
+                ) : (
+                  <div id={styles.containers}>
+                    <h2>
+                      <img
+                        className={styles.robotIconImg}
+                        src="/img/robotIcoEdit.png"
+                        alt="roboIcon"
+                      />
+                      Enigma
+                    </h2>
+                    <p key={input.id} className={styles.ans}>
+                      {input.content}
+                    </p>
+                  </div>
+                )}
               </React.Fragment>
             );
           })}
         </div>
 
-        <div>
+        <div style={{backgroundColor:"transparent"}}>
           <div className={styles.inputbox}>
+
+            <TagsComponent keys={keys}/>
+
             <form action="" method="post">
-            
               <textarea
-                onChange={(e) => handleInputChange(e)}
+                onChange={(e) => setInputQuery(e.target.value)}
                 onKeyDown={(e) => handleKeyPressOnInput(e)}
                 type="text"
                 name="query"
                 id="query"
                 autoFocus={true}
-                placeholder="Ask more on it"      
-             ></textarea>
+                placeholder="Ask more on it"
+              ></textarea>
               <div
                 onClick={(e) => handleSubmit(e)}
                 className={styles.imageContainer}
@@ -237,7 +224,6 @@ function Convo() {
                   alt="input arrow"
                 />
               </div>
-
             </form>
           </div>
         </div>
@@ -245,5 +231,4 @@ function Convo() {
     </div>
   );
 }
-
 export default Convo;
