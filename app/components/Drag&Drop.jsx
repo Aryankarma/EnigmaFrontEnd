@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from '../page.module.scss';
 import { useRouter } from "next/navigation";
+import Link from 'next/link'
 
 // import setFileAvailibility from './setFileState'
 
@@ -134,9 +135,9 @@ const DragDropFiles = () => {
 
         </div>
 
-        {/* <Link className={styles.link} href="/conversation"> */}
+        <Link className={styles.link} href="/conversation">
           <button onClick={()=>Upload()} id={styles.analysisbutton}>Analysis Results</button>
-        {/* </Link> */}
+        </Link>
 
     </div>
   );
